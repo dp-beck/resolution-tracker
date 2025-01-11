@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities;
+﻿using System.Globalization;
+
+namespace Domain.Entities;
 
 public class Resolution
 {
@@ -7,5 +9,5 @@ public class Resolution
    public string? Description { get; set; }
    public int Goal { get; set; }
    public int CurrentLevel { get; set; }
-   public double PercentComplete => ((double)CurrentLevel / (double)Goal) * 100;
+   public string PercentComplete => ((double)CurrentLevel / (double)Goal).ToString("P", CultureInfo.InvariantCulture);
 }
