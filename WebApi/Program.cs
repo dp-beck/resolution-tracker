@@ -13,7 +13,7 @@ var connectionString = builder.Configuration.GetConnectionString("PostgresConnec
                                                     " not found.");
 
 builder.Services.AddDbContext<ResolutionDbContext>(opt =>
-    opt.UseNpgsql(connectionString));
+    opt.UseNpgsql(connectionString, b => b.MigrationsAssembly("WebApi")));
 
 var app = builder.Build();
 
