@@ -30,7 +30,7 @@ namespace WebApplication1.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("CompletedOn")
@@ -56,7 +56,58 @@ namespace WebApplication1.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Resolutions");
+                    b.ToTable("Resolutions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            CurrentLevel = 0,
+                            Description = "Lose 10 pounds",
+                            Goal = 10,
+                            IsComplete = false,
+                            Title = "Lose weight"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 1,
+                            CurrentLevel = 0,
+                            Description = "Do 1,000 pushups",
+                            Goal = 1000,
+                            IsComplete = false,
+                            Title = "Gain muscle"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 3,
+                            CurrentLevel = 0,
+                            Description = "Practice 1,500 minutes",
+                            Goal = 1500,
+                            IsComplete = false,
+                            Title = "Learn to play Guitar"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 2,
+                            CurrentLevel = 0,
+                            Description = "Earn a Certificate in AWS",
+                            IsComplete = false,
+                            Title = "Earn new Certificates"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryId = 3,
+                            CurrentLevel = 0,
+                            Description = "Read 10 books",
+                            Goal = 10,
+                            IsComplete = false,
+                            Title = "Read more"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.ResolutionCategory", b =>
@@ -73,14 +124,33 @@ namespace WebApplication1.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ResolutionCategories");
+                    b.ToTable("ResolutionCategories", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Health"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Career"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Hobbies"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Resolution", b =>
                 {
                     b.HasOne("Domain.Entities.ResolutionCategory", "Category")
                         .WithMany("Resolutions")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
                 });
