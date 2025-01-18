@@ -1,9 +1,11 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace Domain.Entities;
 
 public class Resolution
 {
+   [Key]
    public int Id { get; set; } 
    public required string Title { get; set; }
    public string? Description { get; set; }
@@ -21,4 +23,5 @@ public class Resolution
 
    public bool IsComplete { get; set; }
    public DateTime? CompletedOn { get; set; }
+   public ResolutionCategory? Category { get; set; }
 }

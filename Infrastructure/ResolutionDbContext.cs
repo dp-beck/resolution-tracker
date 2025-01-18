@@ -7,4 +7,10 @@ public class ResolutionDbContext(DbContextOptions<ResolutionDbContext> options) 
 {
     public DbSet<Resolution>? Resolutions { get; set; } = null;
     public DbSet<ResolutionCategory>? ResolutionCategories { get; set; } = null;
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        _ = modelBuilder.Entity<Resolution>().HasData(
+            );
+    }
 }
