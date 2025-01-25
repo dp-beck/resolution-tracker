@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 
 namespace Domain.Entities;
@@ -23,5 +24,6 @@ public class Resolution
 
    public bool IsComplete { get; set; }
    public DateTime? CompletedOn { get; set; }
+   public int CategoryId { get; set; }
    public ResolutionCategory? Category { get; set; }
 }
