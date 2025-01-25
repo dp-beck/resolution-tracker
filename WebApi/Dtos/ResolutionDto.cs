@@ -1,4 +1,4 @@
-namespace WebApplication1.Dtos;
+namespace WebApi.Dtos;
 
 public class ResolutionDto
 {
@@ -9,6 +9,5 @@ public class ResolutionDto
     public string? PercentComplete { get; set; }
     public bool IsComplete { get; set; }
     public DateTime? CompletedOn { get; set; }
-    public int CategoryId { get; set; }
-    public ResolutionCategoryDto? Category { get; set; }
+    public string? Category { get; set; }
 }

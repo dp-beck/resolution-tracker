@@ -1,5 +1,9 @@
+using System.Reflection;
+using AutoMapper;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using WebApi;
+using WebApi.Dtos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +18,8 @@ var connectionString = builder.Configuration.GetConnectionString("PostgresConnec
 builder.Services.AddDbContext<ResolutionDbContext>(opt =>
     opt.UseNpgsql(connectionString, b => b.MigrationsAssembly("WebApi")));
 
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,6 +31,15 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // GET Minimal APIs
-app.MapGet("/resolutions", async (ResolutionDbContext db) => await db.Resolutions.ToListAsync());
+app.MapGet("/resolutions", async (IMapper _mapper,
+    ResolutionDbContext db) =>
+{
+    var resolutions = await db.Resolutions
+        .Include(c => c.Category)
+        .ToListAsync();
+
+    var resolutionDtos = _mapper.Map<List<ResolutionDto>>(resolutions);
+    return resolutionDtos;
+});
 
 app.Run();
