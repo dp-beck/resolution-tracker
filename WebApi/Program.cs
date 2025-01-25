@@ -1,5 +1,3 @@
-
-using Domain.Entities;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +24,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// GET Minimal APIs
 app.MapGet("/resolutions", async (ResolutionDbContext db) => await db.Resolutions.ToListAsync());
 
 app.Run();
