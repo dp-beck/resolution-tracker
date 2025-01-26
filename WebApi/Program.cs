@@ -6,6 +6,7 @@ using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using WebApi;
 using WebApi.Dtos;
+using WebApi.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,13 +36,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // GET Minimal APIs
-app.MapGet("/resolutions", async (IMapper mapper,
-    IResolutionRepository resolutionRepository) =>
-{
-    var resolutions = await resolutionRepository.GetAllAsync();
-
-    var resolutionDtos = mapper.Map<List<ResolutionDto>>(resolutions);
-    return resolutionDtos;
-});
+app.MapGet("/resolutions", ResolutionEndpoints.GetAllAsync);
 
 app.Run();
