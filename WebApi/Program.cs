@@ -1,6 +1,8 @@
 using System.Reflection;
 using AutoMapper;
+using Domain.Interfaces;
 using Infrastructure;
+using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using WebApi;
 using WebApi.Dtos;
@@ -20,6 +22,8 @@ builder.Services.AddDbContext<ResolutionDbContext>(opt =>
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
+builder.Services.AddScoped<IResolutionRepository, ResolutionRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -31,14 +35,12 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // GET Minimal APIs
-app.MapGet("/resolutions", async (IMapper _mapper,
-    ResolutionDbContext db) =>
+app.MapGet("/resolutions", async (IMapper mapper,
+    IResolutionRepository resolutionRepository) =>
 {
-    var resolutions = await db.Resolutions
-        .Include(c => c.Category)
-        .ToListAsync();
+    var resolutions = await resolutionRepository.GetAllAsync();
 
-    var resolutionDtos = _mapper.Map<List<ResolutionDto>>(resolutions);
+    var resolutionDtos = mapper.Map<List<ResolutionDto>>(resolutions);
     return resolutionDtos;
 });
 

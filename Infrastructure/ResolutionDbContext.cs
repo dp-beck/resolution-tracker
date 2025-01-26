@@ -10,6 +10,13 @@ public class ResolutionDbContext(DbContextOptions<ResolutionDbContext> options) 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        
+        modelBuilder.Entity<ResolutionCategory>()
+            .HasMany(r => r.Resolutions)
+            .WithOne(r => r.Category)
+            .HasForeignKey(r => r.CategoryId)
+            .HasPrincipalKey(r => r.Id);
+        
         // Seed Date for Testing Purposes
         modelBuilder.Entity<ResolutionCategory>().ToTable("ResolutionCategories");
         _ = modelBuilder.Entity<ResolutionCategory>().HasData(
