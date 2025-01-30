@@ -10,7 +10,6 @@ public static class ResolutionEndpoints
         IResolutionRepository resolutionRepository)
     {
         var resolutions = await resolutionRepository.GetAllAsync();
-
         var resolutionDtos = mapper.Map<List<ResolutionDto>>(resolutions);
         return TypedResults.Ok(resolutionDtos);
     }
