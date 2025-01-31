@@ -1,6 +1,6 @@
 using Domain.Entities;
 
-namespace Tests.InfrastructureTests;
+namespace Tests.EndpointTests;
 
 public class TestDataHelper
 {
