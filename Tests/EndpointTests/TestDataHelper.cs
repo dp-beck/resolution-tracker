@@ -21,4 +21,14 @@ public class TestDataHelper
             }
         ];
     }
+
+    public static Resolution GetFakeResolution()
+    {
+        return
+            new Resolution
+            {
+                Id = 1,
+                Title = "First Resolution"
+            };
+    }
 }

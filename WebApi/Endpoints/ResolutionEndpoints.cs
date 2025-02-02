@@ -13,4 +13,13 @@ public static class ResolutionEndpoints
         var resolutionDtos = mapper.Map<List<ResolutionDto>>(resolutions);
         return TypedResults.Ok(resolutionDtos);
     }
+
+    public static async Task<IResult> FindByIdAsync(IMapper mapper,
+        IResolutionRepository resolutionRepository,
+        int resolutionId)
+    {
+        var resolution = await resolutionRepository.FindByIdAsync(resolutionId);
+        var resolutionDto = mapper.Map<ResolutionDto>(resolution);
+        return TypedResults.Ok(resolutionDto);
+    }
 }

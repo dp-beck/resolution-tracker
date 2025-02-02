@@ -13,7 +13,7 @@ public class ResolutionRepository (ResolutionDbContext context) : IResolutionRep
             .ToListAsync();
     }
 
-    public Task<Resolution?> GetByIdAsync(int id)
+    public Task<Resolution?> FindByIdAsync(int id)
     {
         throw new NotImplementedException();
     }
