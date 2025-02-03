@@ -5,8 +5,8 @@ namespace Infrastructure;
 
 public class ResolutionDbContext(DbContextOptions<ResolutionDbContext> options) : DbContext(options)
 {
-    public virtual DbSet<Resolution>? Resolutions { get; set; } = null;
-    public virtual DbSet<ResolutionCategory>? ResolutionCategories { get; set; } = null;
+    public virtual DbSet<Resolution> Resolutions { get; set; }
+    public virtual DbSet<ResolutionCategory> ResolutionCategories { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

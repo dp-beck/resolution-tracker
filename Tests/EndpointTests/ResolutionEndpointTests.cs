@@ -6,30 +6,35 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using Tests.Fixtures;
 using WebApi;
 using WebApi.Dtos;
 using WebApi.Endpoints;
 
 namespace Tests.EndpointTests;
 
-public class ResolutionEndpointTests
+public class ResolutionEndpointTests : IClassFixture<ResolutionRepositoryFixture>, IClassFixture<MapperFixture>
 {
+    private readonly ResolutionRepositoryFixture _resolutionRepositoryFixture;
+    private readonly MapperFixture _mapperFixture;
+
+    public ResolutionEndpointTests(ResolutionRepositoryFixture resolutionRepositoryFixture, MapperFixture mapperFixture)
+    {
+        _resolutionRepositoryFixture = resolutionRepositoryFixture;
+        _mapperFixture = mapperFixture;
+    }
+    
     [Fact]
     public async Task GetAllAsync_WhenCalled_ReturnsAllResolutions()
     {
         // Arrange
-        var mockRepo = new Mock<IResolutionRepository>();
-        
-        mockRepo.Setup(repo => repo.GetAllAsync())
+        _resolutionRepositoryFixture.MockRepo.Setup(repo => repo.GetAllAsync())
             .ReturnsAsync(TestDataHelper.GetFakeResolutionsList());
-
-        var mappingProfile = new MappingProfile();
-        var configuration = new MapperConfiguration(cfg => cfg.AddProfile(mappingProfile));
-        var mapper = new Mapper(configuration);
-
-            
+        
         // Act
-        var returnValue = await ResolutionEndpoints.GetAllAsync(mapper, mockRepo.Object);
+        var returnValue = await ResolutionEndpoints.GetAllAsync(
+            _mapperFixture.Mapper, 
+            _resolutionRepositoryFixture.MockRepo.Object);
         var result = returnValue as Ok<List<ResolutionDto>>;
         
         // Assert
@@ -45,17 +50,13 @@ public class ResolutionEndpointTests
     public async Task FindByIdAsync_WhenCalled_ReturnsResolution()
     {
         // Arrange
-        var mockRepo = new Mock<IResolutionRepository>();
-        
-        mockRepo.Setup(repo => repo.FindByIdAsync(It.IsAny<int>()))
+        _resolutionRepositoryFixture.MockRepo.Setup(repo => repo.FindByIdAsync(It.IsAny<int>()))
             .ReturnsAsync(TestDataHelper.GetFakeResolution());
         
-        var mappingProfile = new MappingProfile();
-        var configuration = new MapperConfiguration(cfg => cfg.AddProfile(mappingProfile));
-        var mapper = new Mapper(configuration);
-        
         // Act
-        var returnValue = await ResolutionEndpoints.FindByIdAsync(1, mapper, mockRepo.Object);
+        var returnValue = await ResolutionEndpoints.FindByIdAsync(1, 
+            _mapperFixture.Mapper, 
+            _resolutionRepositoryFixture.MockRepo.Object);
         var result = returnValue as Ok<ResolutionDto>;
         
         // Assert
