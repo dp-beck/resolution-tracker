@@ -13,9 +13,9 @@ public class ResolutionRepository (ResolutionDbContext context) : IResolutionRep
             .ToListAsync();
     }
 
-    public Task<Resolution?> FindByIdAsync(int id)
+    public async Task<Resolution?> FindByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await context.Resolutions.FindAsync(id);
     }
 
     public Task AddAsync(Resolution resolution)

@@ -9,3 +9,6 @@ GET {{WebApi_HostAddress}}/resolutions
 Accept: application/json
 
 ###
+
+GET {{WebApi_HostAddress}}/resolutions/1
+Accept: application/json

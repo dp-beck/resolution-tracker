@@ -35,7 +35,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// GET Minimal APIs
-app.MapGet("/resolutions", ResolutionEndpoints.GetAllAsync);
+// Register Endpoints
+app.RegisterResolutionEndpoints();
 
 app.Run();

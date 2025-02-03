@@ -55,7 +55,7 @@ public class ResolutionEndpointTests
         var mapper = new Mapper(configuration);
         
         // Act
-        var returnValue = await ResolutionEndpoints.FindByIdAsync(mapper, mockRepo.Object, 1);
+        var returnValue = await ResolutionEndpoints.FindByIdAsync(1, mapper, mockRepo.Object);
         var result = returnValue as Ok<ResolutionDto>;
         
         // Assert
