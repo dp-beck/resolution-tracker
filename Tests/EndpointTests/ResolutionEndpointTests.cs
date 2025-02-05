@@ -67,4 +67,19 @@ public class ResolutionEndpointTests : IClassFixture<ResolutionRepositoryFixture
         Assert.IsType<ResolutionDto>(result.Value);
         Assert.Equal("First Resolution", result.Value.Title);
     }
+
+    [Fact]
+    public async Task AddAsync_WhenCalled_AddsResolution()
+    {
+        // Arrange
+        ResolutionDto resolutionDto = new ResolutionDto
+        {
+            Title = "New Resolution",
+        };
+        
+        
+        // Act
+
+        // Assert
+    }
 }
