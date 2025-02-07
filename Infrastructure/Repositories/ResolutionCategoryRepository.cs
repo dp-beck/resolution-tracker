@@ -16,6 +16,12 @@ public class ResolutionCategoryRepository (ResolutionDbContext context) : IResol
         return await context.ResolutionCategories.FindAsync(id);
     }
 
+    public async Task<ResolutionCategory?> FindByNameAsync(string name)
+    {
+        return await context.ResolutionCategories.FirstOrDefaultAsync(
+            c => c.Name == name);
+    }
+
     public async Task AddAsync(ResolutionCategory category)
     {
         await context.ResolutionCategories.AddAsync(category);

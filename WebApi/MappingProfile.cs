@@ -13,7 +13,6 @@ public class MappingProfile : Profile
             .ForMember(
                 dest => dest.Category,
                 opt => opt.MapFrom(src => src.Category.Name)
-                )
-            .ReverseMap();
+                );
     }
 }

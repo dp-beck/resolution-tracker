@@ -10,7 +10,7 @@ public static class ResolutionEndpoints
     public static void RegisterResolutionEndpoints(this WebApplication app)
     {
         app.MapGet("resolutions", GetAllAsync);
-        app.MapGet("resolutions/{resolutionId}", FindByIdAsync);
+        app.MapGet("resolutions/{resolutionId}", FindByIdAsync).WithName("FindByIdAsync");
         app.MapPost("resolutions", AddAsync);
     }
     
@@ -34,13 +34,22 @@ public static class ResolutionEndpoints
         return TypedResults.Ok(resolutionDto);
     }
 
-    // IN PROGRESS
     public static async Task<IResult> AddAsync(ResolutionDto resolutionDto,
         IMapper mapper,
-        IResolutionRepository resolutionRepository)
+        IResolutionRepository resolutionRepository,
+        IResolutionCategoryRepository resolutionCategoryRepository)
     {
-        var resolution = mapper.Map<Resolution>(resolutionDto);
+        var category = await resolutionCategoryRepository.FindByNameAsync(resolutionDto.Category);
+
+        Resolution resolution = new Resolution
+        {
+            Title = resolutionDto.Title,
+            Description = resolutionDto.Description,
+            Goal = resolutionDto.Goal,
+            Category = category
+        };
+        
         await resolutionRepository.AddAsync(resolution);
-        return TypedResults.CreatedAtRoute($"Resolutions/{resolution.Id}", resolution);
+        return TypedResults.CreatedAtRoute("FindByIdAsync", new { resolutionId = resolution.Id });
     }
 }

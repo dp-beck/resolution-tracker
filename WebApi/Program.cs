@@ -24,6 +24,7 @@ builder.Services.AddDbContext<ResolutionDbContext>(opt =>
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddScoped<IResolutionRepository, ResolutionRepository>();
+builder.Services.AddScoped<IResolutionCategoryRepository, ResolutionCategoryRepository>();
 
 var app = builder.Build();
 
