@@ -50,6 +50,8 @@ public static class ResolutionEndpoints
         };
         
         await resolutionRepository.AddAsync(resolution);
-        return TypedResults.CreatedAtRoute("FindByIdAsync", new { resolutionId = resolution.Id });
+        return TypedResults.CreatedAtRoute(resolutionDto,
+            "FindByIdAsync", 
+            new { resolutionId = resolution.Id });
     }
 }

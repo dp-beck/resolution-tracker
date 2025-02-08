@@ -1,4 +1,5 @@
 using AutoMapper;
+using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure;
 using Infrastructure.Repositories;
@@ -13,14 +14,20 @@ using WebApi.Endpoints;
 
 namespace Tests.EndpointTests;
 
-public class ResolutionEndpointTests : IClassFixture<ResolutionRepositoryFixture>, IClassFixture<MapperFixture>
+public class ResolutionEndpointTests : IClassFixture<ResolutionRepositoryFixture>,
+    IClassFixture<ResolutionCategoryRepositoryFixture>, 
+    IClassFixture<MapperFixture>
 {
     private readonly ResolutionRepositoryFixture _resolutionRepositoryFixture;
+    private readonly ResolutionCategoryRepositoryFixture _resolutionCategoryRepositoryFixture;
     private readonly MapperFixture _mapperFixture;
 
-    public ResolutionEndpointTests(ResolutionRepositoryFixture resolutionRepositoryFixture, MapperFixture mapperFixture)
+    public ResolutionEndpointTests(ResolutionRepositoryFixture resolutionRepositoryFixture, 
+        MapperFixture mapperFixture,
+        ResolutionCategoryRepositoryFixture resolutionCategoryRepositoryFixture)
     {
         _resolutionRepositoryFixture = resolutionRepositoryFixture;
+        _resolutionCategoryRepositoryFixture = resolutionCategoryRepositoryFixture;
         _mapperFixture = mapperFixture;
     }
     
@@ -75,11 +82,27 @@ public class ResolutionEndpointTests : IClassFixture<ResolutionRepositoryFixture
         ResolutionDto resolutionDto = new ResolutionDto
         {
             Title = "New Resolution",
+            Description = "New Description",
+            Goal = 23,
+            Category = "Hobbies"
         };
         
+        _resolutionRepositoryFixture.MockRepo.Setup(repo => 
+                repo.AddAsync(It.IsAny<Resolution>()));
         
         // Act
-
+        var returnValue = await ResolutionEndpoints.AddAsync(resolutionDto, 
+            _mapperFixture.Mapper, 
+            _resolutionRepositoryFixture.MockRepo.Object,
+            _resolutionCategoryRepositoryFixture.MockRepo.Object
+            );
+        
+        var result = returnValue as CreatedAtRoute<ResolutionDto>;
         // Assert
+        Assert.NotNull(result);
+        Assert.Equal(201, result.StatusCode);
+        Assert.NotNull(result.Value);
+        Assert.IsType<ResolutionDto>(result.Value);
+        Assert.Equal("New Resolution", result.Value.Title);
     }
 }
