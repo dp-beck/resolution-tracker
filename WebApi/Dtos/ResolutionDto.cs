@@ -2,7 +2,7 @@ namespace WebApi.Dtos;
 
 public class ResolutionDto
 {
-    public required string Title { get; set; }
+    public string? Title { get; set; }
     public string? Description { get; set; }
     public int? Goal { get; set; }
     public int? CurrentLevel { get; set; } = 0;

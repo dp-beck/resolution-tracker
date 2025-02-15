@@ -24,9 +24,11 @@ public class ResolutionRepository (ResolutionDbContext context) : IResolutionRep
         await context.SaveChangesAsync();
     }
 
-    public Task UpdateAsync(Resolution resolution)
+    public async Task UpdateAsync(int id, Resolution updatedResolution)
     {
-        throw new NotImplementedException();
+        var oldResolution = await context.Resolutions.FindAsync(id);
+        if (oldResolution != null) context.Entry(oldResolution).CurrentValues.SetValues(updatedResolution);
+        await context.SaveChangesAsync();
     }
 
     public Task DeleteAsync(Resolution resolution)

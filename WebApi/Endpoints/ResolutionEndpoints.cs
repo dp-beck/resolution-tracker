@@ -12,6 +12,7 @@ public static class ResolutionEndpoints
         app.MapGet("resolutions", GetAllAsync);
         app.MapGet("resolutions/{resolutionId}", FindByIdAsync).WithName("FindByIdAsync");
         app.MapPost("resolutions", AddAsync);
+        app.MapPut("resolutions/{resolutionId}", UpdateAsync);
     }
     
     public static async Task<IResult> GetAllAsync(IMapper mapper,
@@ -35,7 +36,6 @@ public static class ResolutionEndpoints
     }
 
     public static async Task<IResult> AddAsync(ResolutionDto resolutionDto,
-        IMapper mapper,
         IResolutionRepository resolutionRepository,
         IResolutionCategoryRepository resolutionCategoryRepository)
     {
@@ -53,5 +53,31 @@ public static class ResolutionEndpoints
         return TypedResults.CreatedAtRoute(resolutionDto,
             "FindByIdAsync", 
             new { resolutionId = resolution.Id });
+    }
+
+    // RETHINK HOW TO DO THIS
+    public static async Task<IResult> UpdateAsync(int resolutionId,
+        ResolutionDto resolutionDto,
+        IResolutionRepository resolutionRepository,
+        IResolutionCategoryRepository resolutionCategoryRepository)
+    {
+        var resolution = new Resolution()
+        {
+            Title = resolutionDto.Title,
+            Description = resolutionDto.Description,
+            Goal = resolutionDto.Goal,
+            CurrentLevel = resolutionDto.CurrentLevel,
+            CompletedOn = resolutionDto.CompletedOn,
+            IsComplete = resolutionDto.IsComplete,
+        };
+            
+        if (resolutionDto.Category is not null)
+        {
+            var category = await resolutionCategoryRepository.FindByNameAsync(resolutionDto.Category);
+            resolution.Category = category;
+        }
+        
+        await resolutionRepository.UpdateAsync(resolutionId, resolution);
+        return TypedResults.NoContent();
     }
 }

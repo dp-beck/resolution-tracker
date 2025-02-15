@@ -1,14 +1,8 @@
-using AutoMapper;
 using Domain.Entities;
-using Domain.Interfaces;
-using Infrastructure;
-using Infrastructure.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Tests.Fixtures;
-using WebApi;
 using WebApi.Dtos;
 using WebApi.Endpoints;
 
@@ -92,7 +86,6 @@ public class ResolutionEndpointTests : IClassFixture<ResolutionRepositoryFixture
         
         // Act
         var returnValue = await ResolutionEndpoints.AddAsync(resolutionDto, 
-            _mapperFixture.Mapper, 
             _resolutionRepositoryFixture.MockRepo.Object,
             _resolutionCategoryRepositoryFixture.MockRepo.Object
             );
@@ -104,5 +97,27 @@ public class ResolutionEndpointTests : IClassFixture<ResolutionRepositoryFixture
         Assert.NotNull(result.Value);
         Assert.IsType<ResolutionDto>(result.Value);
         Assert.Equal("New Resolution", result.Value.Title);
+    }
+
+    [Fact]
+    public async Task UpdateAsync_WhenCalled_UpdatesResolution()
+    {
+        // Arrange
+        ResolutionDto resolutionDto = new ResolutionDto
+        {
+            Title = "Updated Resolution",
+        };
+        
+        // Act
+        var returnValue = await ResolutionEndpoints.UpdateAsync(1, 
+            resolutionDto, 
+            _resolutionRepositoryFixture.MockRepo.Object,
+            _resolutionCategoryRepositoryFixture.MockRepo.Object
+        );
+        
+        var result = returnValue as NoContent;
+        
+        Assert.NotNull(result);
+        Assert.Equal(204, result.StatusCode);
     }
 }
