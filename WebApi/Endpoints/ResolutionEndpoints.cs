@@ -13,6 +13,7 @@ public static class ResolutionEndpoints
         app.MapGet("resolutions/{resolutionId}", FindByIdAsync).WithName("FindByIdAsync");
         app.MapPost("resolutions", AddAsync);
         app.MapPut("resolutions/{resolutionId}", UpdateAsync);
+        app.MapDelete("resolutions/{resolutionId}", DeleteAsync);
     }
     
     public static async Task<IResult> GetAllAsync(IMapper mapper,
@@ -55,13 +56,12 @@ public static class ResolutionEndpoints
             new { resolutionId = resolution.Id });
     }
 
-    // RETHINK HOW TO DO THIS
     public static async Task<IResult> UpdateAsync(int resolutionId,
         ResolutionDto resolutionDto,
         IResolutionRepository resolutionRepository,
         IResolutionCategoryRepository resolutionCategoryRepository)
     {
-        var resolution = new Resolution()
+        var resolution = new Resolution
         {
             Title = resolutionDto.Title,
             Description = resolutionDto.Description,
@@ -78,6 +78,16 @@ public static class ResolutionEndpoints
         }
         
         await resolutionRepository.UpdateAsync(resolutionId, resolution);
+        return TypedResults.NoContent();
+    }
+
+    public static async Task<IResult> DeleteAsync(
+        int resolutionId,
+        IResolutionRepository resolutionRepository)
+    {
+        var resolution = await resolutionRepository.FindByIdAsync(resolutionId);
+        if (resolution is null) return TypedResults.NotFound();
+        await resolutionRepository.DeleteAsync(resolution);
         return TypedResults.NoContent();
     }
 }

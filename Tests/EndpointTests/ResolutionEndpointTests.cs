@@ -120,4 +120,17 @@ public class ResolutionEndpointTests : IClassFixture<ResolutionRepositoryFixture
         Assert.NotNull(result);
         Assert.Equal(204, result.StatusCode);
     }
+
+    [Fact]
+    public async Task DeleteAsync_WhenCalled_DeletesResolution()
+    {
+        // Act
+        var returnValue = await ResolutionEndpoints.DeleteAsync(1,
+            _resolutionRepositoryFixture.MockRepo.Object);
+        
+        var result = returnValue as NoContent;
+        
+        Assert.NotNull(result);
+        Assert.Equal(204, result.StatusCode);
+    }
 }
