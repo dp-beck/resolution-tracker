@@ -14,5 +14,7 @@ public class MappingProfile : Profile
                 dest => dest.Category,
                 opt => opt.MapFrom(src => src.Category.Name)
                 );
+
+        CreateMap<ResolutionCategory, ResolutionCategoryDto>();
     }
 }

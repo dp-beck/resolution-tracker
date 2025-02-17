@@ -38,5 +38,6 @@ app.UseHttpsRedirection();
 
 // Register Endpoints
 app.RegisterResolutionEndpoints();
+app.RegisterResolutionCategoryEndpoints();
 
 app.Run();

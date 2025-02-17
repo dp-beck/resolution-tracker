@@ -28,13 +28,15 @@ public class ResolutionCategoryRepository (ResolutionDbContext context) : IResol
         await context.SaveChangesAsync();
     }
 
-    public Task UpdateAsync(ResolutionCategory category)
+    public async Task UpdateAsync(int id, ResolutionCategory updatedCategory)
     {
-        throw new NotImplementedException();
-    }
+        var oldCategory = await context.ResolutionCategories.FindAsync();
+        if (oldCategory != null) context.Entry(oldCategory).CurrentValues.SetValues(updatedCategory);
+        await context.SaveChangesAsync();    }
 
-    public Task DeleteAsync(ResolutionCategory category)
+    public async Task DeleteAsync(ResolutionCategory category)
     {
-        throw new NotImplementedException();
+        context.ResolutionCategories.Remove(category);
+        await context.SaveChangesAsync();
     }
 }
