@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using Domain.Entities;
-using WebApi.Dtos;
 using AutoMapper;
+using Shared.Dtos;
 
 namespace WebApi;
 

@@ -1,6 +1,7 @@
 using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Shared.Dtos;
 
 namespace Infrastructure.Repositories;
 
@@ -28,11 +29,12 @@ public class ResolutionCategoryRepository (ResolutionDbContext context) : IResol
         await context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(int id, ResolutionCategory updatedCategory)
+    public async Task UpdateAsync(int id, ResolutionCategoryDto categoryDto)
     {
-        var oldCategory = await context.ResolutionCategories.FindAsync();
-        if (oldCategory != null) context.Entry(oldCategory).CurrentValues.SetValues(updatedCategory);
-        await context.SaveChangesAsync();    }
+        var oldCategory = await context.ResolutionCategories.FindAsync(id);
+        if (oldCategory != null) context.Entry(oldCategory).CurrentValues.SetValues(categoryDto);
+        await context.SaveChangesAsync();    
+    }
 
     public async Task DeleteAsync(ResolutionCategory category)
     {

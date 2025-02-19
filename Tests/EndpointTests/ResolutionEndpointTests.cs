@@ -2,8 +2,8 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Shared.Dtos;
 using Tests.Fixtures;
-using WebApi.Dtos;
 using WebApi.Endpoints;
 
 namespace Tests.EndpointTests;

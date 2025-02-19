@@ -8,7 +8,7 @@ Accept: application/json
 GET {{WebApi_HostAddress}}/resolutions
 Accept: application/json
 
-### Get Reslution
+### Get Resolution
 
 GET {{WebApi_HostAddress}}/resolutions/1
 Accept: application/json
@@ -20,18 +20,48 @@ Content-Type: application/json
 Accept-Language: en-US,en;q=0.5
 
 {
-    "Title": "Test Resolution",
+    "Title": "Eat some vegetables",
     "Description": "Test Description",
     "Goal": "300",
-    "Category": "Hobbies"
+    "Category": "Health"
 }
 
-### Update Title
+### Update
 
 PUT {{WebApi_HostAddress}}/resolutions/1
 Content-Type: application/json
 Accept-Language: en-US,en;q=0.5
 
 {
-    "Title": "Lose a lot of weight"
+    "Title": "Lose some weight"
+}
+
+### Get Resolution Categories
+
+GET {{WebApi_HostAddress}}/resolution-categories
+Accept: application/json
+
+### Get Resolution Category
+
+GET {{WebApi_HostAddress}}/resolution-categories/1
+Accept: application/json
+
+### Create Resolution Category
+
+POST {{WebApi_HostAddress}}/resolution-categories
+Content-Type: application/json
+Accept-Language: en-US,en;q=0.5
+
+{
+  "Name": "Test Category"
+}
+
+### Update Category Name
+
+PUT {{WebApi_HostAddress}}/resolution-categories/1
+Content-Type: application/json
+Accept-Language: en-US,en;q=0.5
+
+{
+  "Name": "Super Duper Health"
 }

@@ -5,7 +5,6 @@ using Infrastructure;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using WebApi;
-using WebApi.Dtos;
 using WebApi.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);

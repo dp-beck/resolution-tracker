@@ -1,7 +1,7 @@
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
-using WebApi.Dtos;
+using Shared.Dtos;
 
 namespace WebApi.Endpoints;
 
@@ -10,9 +10,9 @@ public static class ResolutionCategoryEndpoints
     public static void RegisterResolutionCategoryEndpoints(this WebApplication app)
     {
         app.MapGet("resolution-categories", GetAllAsync);
-        app.MapGet("resolution-categories/{resolutionCategoryId}", FindByIdAsync).WithName("FindByIdAsync");
+        app.MapGet("resolution-categories/{resolutionCategoryId}", FindByIdAsync).WithName("FindCategoryByIdAsync");
         app.MapPost("resolution-categories", AddAsync);
-        app.MapPut("resolution-categories/{resolutionId}", UpdateAsync);
+        app.MapPut("resolution-categories/{resolutionCategoryId}", UpdateAsync);
         app.MapDelete("resolution-categories/{resolutionId}", DeleteAsync);
     }
     
@@ -47,7 +47,7 @@ public static class ResolutionCategoryEndpoints
         
         await resolutionCategoryRepository.AddAsync(category);
         return TypedResults.CreatedAtRoute(categoryDto,
-            "FindByIdAsync", 
+            "FindCategoryByIdAsync", 
             new { resolutionCategoryId = category.Id });
     }
 
@@ -55,12 +55,7 @@ public static class ResolutionCategoryEndpoints
         ResolutionCategoryDto categoryDto,
         IResolutionCategoryRepository resolutionCategoryRepository)
     {
-        var category = new ResolutionCategory
-        {
-            Name = categoryDto.Name,
-        };
-        
-        await resolutionCategoryRepository.UpdateAsync(resolutionCategoryId, category);
+        await resolutionCategoryRepository.UpdateAsync(resolutionCategoryId, categoryDto);
         return TypedResults.NoContent();
     }
 
